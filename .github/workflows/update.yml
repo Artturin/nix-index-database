@@ -11,10 +11,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            indexName: = linux
+            indexName: linux
 
           - os: macos-latest
-            indexName: = darwin
+            indexName: darwin
         #nixPath:
         #    - nixpkgs=channel:nixpkgs-unstable
     name: Build database
