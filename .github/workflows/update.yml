@@ -9,8 +9,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest , macos-latest]
-        indexes: [linux, darwin]
+        include:
+          - os: ubuntu-latest
+            indexName: = linux
+
+          - os: macos-latest
+            indexName: = darwin
         #nixPath:
         #    - nixpkgs=channel:nixpkgs-unstable
     name: Build database
@@ -22,7 +26,8 @@ jobs:
       with:
         nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz
     - id: step1
-      run: nix-shell -p nix-index --command "nix-index --db ./${{ matrix.indexes }}-index 2>&1 | grep -v '+ generating index ${{ matrix.indexes }}'"
+      run: nix-shell -p nix-index --command "nix-index --db ./${{ matrix.indexName }}-index 2>&1 | grep -v '+ generating index ${{ matrix.indexName }}'"
+
   upload-index:
     runs-on: ubuntu-latest
     needs: index
