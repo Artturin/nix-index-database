@@ -15,8 +15,6 @@ jobs:
 
           - os: macos-latest
             indexName: darwin
-        #nixPath:
-        #    - nixpkgs=channel:nixpkgs-unstable
     name: Build database
     steps:
     - uses: actions/checkout@v2
@@ -24,7 +22,7 @@ jobs:
       with:
         nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz
     - name: run nix-index
-      run: nix-shell -p nix-index --command "nix-index --db ./${{ matrix.indexName }}-index 2>&1 | grep -v '+ generating index ${{ matrix.indexName }}'"
+      run: nix-shell -p nix-index --command "nix-index --db ./${{ matrix.indexName }}-index 2>&1 | grep -v '+ generating index'"
     - name: upload artifact
       uses: actions/upload-artifact@v2
       with:
