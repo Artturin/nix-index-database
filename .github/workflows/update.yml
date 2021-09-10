@@ -62,7 +62,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./linux-index
+        asset_path: linux-index
         asset_name: linux-index
         asset_content_type: application/octet-stream
     - name: Upload Darwin Release Asset
@@ -72,6 +72,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./darwin-index
+        asset_path: darwin-index
         asset_name: darwin-index
         asset_content_type: application/octet-stream
