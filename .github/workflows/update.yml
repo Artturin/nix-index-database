@@ -37,10 +37,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: linux
+        path: linux-index
     - name: download darwin artifact
       uses: actions/download-artifact@v2
       with:
         name: darwin
+        path: darwin-index
 
     - name: Display structure of downloaded files
       run: ls -R
