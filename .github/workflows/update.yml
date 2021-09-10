@@ -33,7 +33,7 @@ jobs:
 
   upload-index:
     runs-on: ubuntu-latest
-    needs: linux-index, darwin-index
+    needs: linux-index 
     steps:
     - name: Get current date
       id: date
