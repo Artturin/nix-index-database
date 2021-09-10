@@ -5,9 +5,15 @@ on:
     # every sunday at 2:51
     - cron:  '51 2 * * 0'
 jobs:
-  linux-index:
-    runs-on: ubuntu-latest
-    name: Build Linux database
+  index:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest , macos-latest]
+        indexes: [linux, darwin]
+        #nixPath:
+        #    - nixpkgs=channel:nixpkgs-unstable
+    name: Build database
     outputs:
       index: ${{ steps.step1 }}
     steps:
@@ -16,25 +22,10 @@ jobs:
       with:
         nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz
     - id: step1
-      run: nix-shell -p nix-index --command "nix-index --db ./linux-index 2>&1 | grep -v '+ generating index'"
-
-  darwin-index:
-    runs-on: macos-latest
-    name: Build Darwin database
-    outputs:
-      index: ${{ steps.step1 }}
-    steps:
-    - uses: actions/checkout@v2
-    - uses: cachix/install-nix-action@v13
-      with:
-        nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz
-    - id: step1
-      run: nix-shell -p nix-index --command "nix-index --db ./darwin-index 2>&1 | grep -v '+ generating index'"
-
+      run: nix-shell -p nix-index --command "nix-index --db ./${{ matrix.indexes }}-index 2>&1 | grep -v '+ generating index ${{ matrix.indexes }}'"
   upload-index:
     runs-on: ubuntu-latest
-    needs: linux-index 
-    needs: darwin-index
+    needs: index
     steps:
     - name: Get current date
       id: date
